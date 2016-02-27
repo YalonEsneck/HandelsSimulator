@@ -1,0 +1,21 @@
+Verleihen:
+	Kapital wird Schuldner zugewiesen. 
+	* Perioden in Wochen
+	* Kredit einzelnd anlegbar
+	- Kreditvolumen: 
+		* variabel (0 -> max. Gold)
+		* fest (x Gold)
+	- Zinssatz:
+		* variabel
+	- Tilgungsrate:
+		* konstante Rate
+		* konstante Tilgung
+Leihen:
+	Kapital des Anlegers wird Banqiuer als Fremdkapital zugewiesen. 
+	* Perioden in Wochen
+	* Anlagen einzelnd anlegbar
+	- Anlagevolumen:
+		* variabel
+		* fest
+	- Zinssatz:
+		* variabel

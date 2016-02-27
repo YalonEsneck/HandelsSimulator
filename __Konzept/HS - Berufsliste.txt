@@ -1,0 +1,25 @@
+- Beruf (berufstypische Gebäude - Produkte/Dienstleistungen/Sonstiges) [-> Spezialisierungen]
+
+Produktionsberufe:
+- Bäcker (Backstube - Brot)
+- Metzger (Schlachthof - Fleisch)
+
+- Schmied (Schmiede - Eisenwaren) -> (Werkzeug-)Schmied, Waffenschmied, Goldschmied
+- Tischler (Tischlerei - Holzwaren, Möbel)
+- Tuchmacher (Tuchmacherei - Tücher, Kleidung)
+
+- Wirt (Schänke - Essen)
+
+- Prior/Abt (Kloster, Kathedrale - Bücher, Käse, Bier, Obst, Gemüse)
+- ? (Gehöft - Getreide, Gemüse, Obst, Vieh, Wolle)
+
+Dienstleistungsberufe:
+- Priester (Kirche - Seelenheil, Almosen, Kirchenzehnt)
+- Büttel (Turm - Ordnung)
+
+- Zimmermann (keines - alles aus und mit Holz: Gebäudebau, Anbau, Ausbau, Sanierung, Gerüstbau, Kranbau) -> Schiffsbauer
+- Baumeister (keines - alles aus und mit Stein: Gebäudebau, Burgenbau, Mauerbau, Turmbau, Sanierung, Anbau, Ausbau)
+
+undefinierbare Berufe:
+- Händler (Kontor - Logistik, Lagerung)
+- Banquier (Geldhaus - Geld verleihen und anleihen)
