@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test</title>
+<meta charset="utf-8">
+<script>
+	/**
+	 * Tilt the tiles by +45°.
+	 */
+	function tilt(tileObject, maxCols, maxRows) {
+		tileObject.xMod = 0.5 * (maxCols - tileObject.x - 1 - tileObject.y)
+				+ (maxRows - maxCols) * 0.5;
+		tileObject.yMod = (tileObject.x - tileObject.y) * 0.5;
+
+		console.debug('---');
+		console.debug(tileObject.x + '|' + tileObject.y);
+		console.debug('xMod: (' + maxCols + ' - ' + tileObject.x + ' - 1 - '
+				+ tileObject.y + ') / 2 = ' + tileObject.xMod);
+		console.debug('yMod: (' + tileObject.x + ' - ' + tileObject.y
+				+ ') / 2 = ' + tileObject.yMod);
+
+		return tileObject;
+	}
+
+	// determine the coordinates of a tile
+	function determineCoordinates(tileObject, maxCols, maxRows) {
+		tileObject = tilt(tileObject, maxCols, maxRows);
+
+		tileObject.xCoord = tileObject.width * (tileObject.x + tileObject.xMod);
+		tileObject.yCoord = tileObject.height
+				* (tileObject.y + tileObject.yMod);
+
+		return tileObject;
+	}
+
+	function prepareCanvas(Cols, Rows, CellWidth, CellHeight) {
+		var canvas = document.getElementById("myCanvas");
+		canvas.width = (Cols / 2 + Rows / 2) * CellWidth;
+		canvas.height = (Cols / 2 + Rows / 2) * CellHeight;
+		var ctx = canvas.getContext("2d");
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		ctx.font = '20px Verdana';
+		ctx.fillStyle = '#FFFFFF';
+
+		return ctx;
+	}
+
+	function drawTile(tileObject, ctx, maxRows, maxCols) {
+
+		var timeShift = 0;
+
+		if (tileObject.y + 1 == Math.round(maxRows / 2)
+				&& tileObject.x + 1 == Math.round(maxCols / 2))
+			img = document.getElementById("test");
+		else if ((tileObject.x + tileObject.y) % 2)
+			img = document.getElementById("dark");
+		else
+			img = document.getElementById("light");
+
+		setTimeout(placeImage, timeShift * tileObject.counter, ctx, img,
+				tileObject, tileObject.counter);
+	}
+
+	function drawStuff() {
+		var Cols = parseInt(document.getElementById("cols").value);
+		var Rows = parseInt(document.getElementById("rows").value);
+		var CellWidth = parseInt(document.getElementById("cellwidth").value);
+		var CellHeight = parseInt(document.getElementById("cellheight").value);
+
+		var counter = 0;
+
+		var ctx = prepareCanvas(Cols, Rows, CellWidth, CellHeight);
+
+		// iterate through each column in each row
+		var y = 0;
+		while (y < Rows) {
+			var x = 0;
+			while (x < Cols) {
+				// at this point we know which tile is going to be drawn
+
+				// construct the tile object for easier access
+				tileObject = {
+					"width" : CellWidth,
+					"height" : CellHeight,
+					"x" : x,
+					"y" : y,
+					"counter" : counter
+				};
+
+				// now we have to determine the coordinates
+				tileObject = determineCoordinates(tileObject, Cols, Rows);
+				drawTile(tileObject, ctx, Cols, Rows);
+
+				counter++;
+				x++;
+			}
+			y++;
+		}
+	}
+
+	// place an image
+	function placeImage(ctx, img, tileObject, counter) {
+		ctx.drawImage(img, tileObject.xCoord, tileObject.yCoord - img.height
+				+ tileObject.height);
+		//		ctx.fillText(counter, tileObject.xCoord + 24, tileObject.yCoord + 22,
+		//				15);
+	}
+</script>
+</head>
+<body>
+	<h1>Test</h1>
+	<p>
+		<span style="display: block">Spalten: <input type="text"
+			id="cols" value="3"></span> <span style="display: block">Reihen:
+			<input type="text" id="rows" value="3">
+		</span> <span style="display: block">Zellbreite: <input type="text"
+			id="cellwidth" value="60"></span> <span style="display: block">Zellh&ouml;he:
+			<input type="text" id="cellheight" value="30">
+		</span>
+		<button onClick="drawStuff()" style="display: inline-block">zeichnen</button>
+	</p>
+	<p>
+		<canvas id="myCanvas" style="border: 1px solid #000000;"></canvas>
+	</p>
+	<p>
+	<pre id="output"></pre>
+	</p>
+	<img src="bg_0.png" id="dark" style="display: none">
+	<img src="bg_1.png" id="light" style="display: none">
+	<img src="test.png" id="test" style="display: none">
+</body>
+</html>
