@@ -62,7 +62,6 @@ trait ConfigurationLoader {
             if (array_key_exists ( $Section, $configs )) {
               $configSections [$Section] = $configs [$Section];
             } else if ($Mandatory) {
-              Debugger::report ( "Mandatory section <{$Section}> does not exist in configuration file <{$filePath}>!" );
               return false;
             }
           }
