@@ -1,4 +1,5 @@
 <?php
+namespace App\HandelsSimulator\GraphicsEngine;
 
 /**
  * This class is a singleton.
@@ -6,7 +7,7 @@
  * @author Jan Merkelbag
  *
  */
-final class GraphicsEngine {
+class GraphicsEngine {
 
   /**
    * The instance if one exists.
@@ -364,7 +365,3 @@ $map = array (
         'terrain'
     )
 );
-
-GraphicsEngine::getInstance ( COLS, ROWS, CELLWIDTH, CELLHEIGHT, IMAGEHEIGHT );
-GraphicsEngine::render ( $map, FALSE );
-GraphicsEngine::output ();
