@@ -9,19 +9,11 @@ namespace App\HandelsSimulator\GraphicsEngine;
 class GraphicsEngine {
 
   /**
-   * The instance if one exists.
-   * Else NULL.
-   *
-   * @var GraphicsEngine
-   */
-  private static $instance = null;
-
-  /**
    * Debug the rendering process.
    *
    * @var boolean
    */
-  private static $DebugRendering = FALSE;
+  private $DebugRendering = FALSE;
 
   /**
    * Count of tiles from left to right.
@@ -85,7 +77,7 @@ class GraphicsEngine {
    *
    * @var array
    */
-  private static $LoadedImages = array ();
+  private $LoadedImages = array ();
 
   /**
    * Deny instantiation.
@@ -101,20 +93,25 @@ class GraphicsEngine {
    * @param int $CellHeight
    *          Height of an image in pixels.
    */
-  private function __construct( $Cols, $Rows, $CellWidth, $CellHeight, $ImageHeight ) {
+  public function __construct() {
 
     // set parameters
-    $this->Cols = $Cols;
-    $this->Rows = $Rows;
-    $this->CellWidth = $CellWidth;
-    $this->CellHeight = $CellHeight;
-    $this->ImageHeight = $ImageHeight;
+    $this->Cols = COLS;
+    $this->Rows = ROWS;
+    $this->CellWidth = CELLWIDTH;
+    $this->CellHeight = CELLHEIGHT;
+    $this->ImageHeight = IMAGEHEIGHT;
     $this->Width = $this->Cols * $this->CellWidth;
     $this->Height = $this->Rows * $this->CellHeight;
 
     // allocate final image to copy stuff to
     $this->Image = imagecreatetruecolor ( $this->Width, $this->Height );
-    imagefill ( $this->Image, 0, 0, imagecolorallocate ( $this->Image, 255, 255, 255 ) );
+
+    // enable alpha channel (opaque)
+    imagesavealpha ( $this->Image, true );
+
+    // fill image with transparent background
+    imagefill ( $this->Image, 0, 0, imagecolorallocatealpha ( $this->Image, 0, 0, 0, 127 ) );
   }
 
   /**
@@ -134,58 +131,23 @@ class GraphicsEngine {
   }
 
   /**
-   * Initialise a new engine or get the existing one.
-   *
-   * @param int $Cols
-   *          Count of tiles from left to right.
-   * @param int $Rows
-   *          Count of tiles from top to bottom.
-   * @param int $CellWidth
-   *          Width of a cell in pixels.
-   * @param int $CellHeight
-   *          Height of a cell in pixels.
-   * @param int $CellHeight
-   *          Height of an image in pixels.
-   * @return GraphicsEngine|NULL Returns either the current GraphicsEngine on success or NULL on failure.
-   */
-  public static function getInstance( $Cols = 0, $Rows = 0, $CellWidth = 0, $CellHeight = 0, $ImageHeight = 0) {
-
-    // check parameters for validity
-    if ( is_int ( $Cols ) && is_int ( $Rows ) && $Cols > 0 && $Rows > 0 ) {
-
-      // create a new singleton if none exists
-      if ( self::$instance === null ) {
-
-        // get new instance
-        self::$instance = new GraphicsEngine ( $Cols, $Rows, $CellWidth, $CellHeight, $ImageHeight );
-      }
-
-      // return singleton
-      return self::$instance;
-    }
-
-    // failure
-    return null;
-  }
-
-  /**
    * Places a tile image at a given position.
    * Respects different heights for images: The bottom of the image will always
    * be placed at the bottom of the tile.
    */
-  private static function drawTile( \stdClass $tileObject ) {
+  private function drawTile( \stdClass $tileObject ) {
 
     // TODO Get the image depending on the cell data. The image should already
     // have been created in the beginning of the rendering process - see below.
-    if ( ! array_key_exists ( 'imgs/' . $tileObject->value . '.png', self::$LoadedImages ) ) {
-      self::$LoadedImages [$tileObject->value] = imagecreatefrompng ( 'imgs/' . $tileObject->value . '.png' );
+    if ( ! array_key_exists ( $tileObject->value, $this->LoadedImages ) ) {
+      $this->LoadedImages [$tileObject->value] = imagecreatefrompng ( $tileObject->value );
     }
 
-    $img = self::$LoadedImages [$tileObject->value];
-    $dimensions = getimagesize ( 'imgs/' . $tileObject->value . '.png' );
+    $img = $this->LoadedImages [$tileObject->value];
+    $dimensions = getimagesize ( $tileObject->value );
 
     // place the image at the given position
-    imagecopyresampled ( self::$instance->Image, $img, $tileObject->xCoord, $tileObject->yCoord - $dimensions [1] + $tileObject->height, 0, 0, $dimensions [0], $dimensions [1], $dimensions [0], $dimensions [1] );
+    imagecopyresampled ( $this->Image, $img, $tileObject->xCoord, $tileObject->yCoord - $dimensions [1] + $tileObject->height, 0, 0, $dimensions [0], $dimensions [1], $dimensions [0], $dimensions [1] );
     // This is the calculation which should be used above:
     // (img, tileObject.xCoord, tileObject.yCoord - img.height + tileObject.height)
 
@@ -204,10 +166,10 @@ class GraphicsEngine {
   /**
    * Calculate the coordinates in pixels of a tile's position.
    */
-  private static function determineCoordinates( \stdClass $tileObject, $maxCols, $maxRows ) {
+  private function determineCoordinates( \stdClass $tileObject, $maxCols, $maxRows ) {
 
     // tilt the tiles first
-    $tileObject = self::tilt ( $tileObject, $maxCols, $maxRows );
+    $tileObject = $this->tilt ( $tileObject, $maxCols, $maxRows );
 
     // map the x and y values to the absolute coordinate in pixels
     $tileObject->xCoord = $tileObject->width * ($tileObject->x + $tileObject->xMod);
@@ -237,7 +199,7 @@ class GraphicsEngine {
    * ______--- 8 ---
    * _________---
    */
-  private static function tilt( \stdClass $tileObject, $maxCols, $maxRows ) {
+  private function tilt( \stdClass $tileObject, $maxCols, $maxRows ) {
 
     // shift the tile to right or left depending on its x and y
     $tileObject->xMod = 0.5 * ($maxCols - $tileObject->x - 1 - $tileObject->y) + ($maxRows - $maxCols) * 0.5;
@@ -246,7 +208,7 @@ class GraphicsEngine {
     $tileObject->yMod = ($tileObject->x - $tileObject->y) * 0.5;
 
     // debug string if necessary...
-    if ( self::$DebugRendering ) {
+    if ( $this->DebugRendering ) {
       echo implode ( PHP_EOL, array (
           '---',
           $tileObject->x . '|' . $tileObject->y,
@@ -261,39 +223,39 @@ class GraphicsEngine {
   /**
    * Renders, saves and returns the image.
    *
-   * @param array $Map
-   *          An array containing the content of the map to be rendered.
+   * @param Map $Map
+   *          The map to be rendered.
    */
-  public static function render( array $Map, $debuggingEnabled = FALSE) {
+  public function render( Map $map, $debuggingEnabled = FALSE) {
 
     // enable debugger if necessary
-    self::$DebugRendering = $debuggingEnabled;
+    $this->DebugRendering = $debuggingEnabled;
 
     // check whether image is usable
-    if ( self::$instance->Image === null ) {
+    if ( $this->Image === null ) {
       throw new \Exception ( 'Image was not initialised yet!' );
     }
 
     // iterate through each column in each row
-    for ( $y = 0; $y < self::$instance->Rows; $y ++ ) {
-      for ( $x = 0; $x < self::$instance->Cols; $x ++ ) {
+    for ( $y = 0; $y < $map->getRowCount (); $y ++ ) {
+      for ( $x = 0; $x < $map->getColCount (); $x ++ ) {
 
         // construct the tile object for simplified data exchange
         $tileObject = new \stdClass ();
-        $tileObject->width = self::$instance->CellWidth;
-        $tileObject->height = self::$instance->CellHeight;
+        $tileObject->width = $this->CellWidth;
+        $tileObject->height = $this->CellHeight;
         $tileObject->x = $x;
         $tileObject->y = $y;
-        $tileObject->value = $Map [$x] [$y];
+        $tileObject->value = $map->getCellAt ( $x, $y )->getImagePath ();
 
         // now we have to determine the coordinates
-        $tileObject = self::determineCoordinates ( $tileObject, self::$instance->Cols, self::$instance->Rows );
-        self::drawTile ( $tileObject, self::$instance->Cols, self::$instance->Rows );
+        $tileObject = $this->determineCoordinates ( $tileObject, $this->Cols, $this->Rows );
+        $this->drawTile ( $tileObject, $this->Cols, $this->Rows );
       }
     }
 
     // clean up loaded images
-    foreach ( self::$LoadedImages as /*$FilePath =>*/ $Resource ) {
+    foreach ( $this->LoadedImages as /*$FilePath =>*/ $Resource ) {
       imagedestroy ( $Resource );
     }
   }
@@ -301,17 +263,33 @@ class GraphicsEngine {
   /**
    * Print the rendered map as a PNG to stdout.
    */
-  public static function output() {
+  public function output() {
 
     // output image
-    if ( ! self::$DebugRendering ) {
-      imagepng ( self::$instance->Image );
+    if ( ! $this->DebugRendering ) {
+      imagepng ( $this->Image );
+    }
+  }
+
+  /**
+   * Return the rendered map.
+   */
+  public function getResultImage( string $type = 'png') {
+
+    // output image
+    if ( ! $this->DebugRendering ) {
+      if ( $type === 'png' ) {
+        ob_start ();
+        imagepng ( $this->Image );
+        $imageData = ob_get_contents ();
+        ob_end_clean ();
+        return $imageData;
+      } else {
+        throw new \InvalidArgumentException ( "Unknown renderer type '{$type}'!" );
+      }
     }
   }
 }
-
-header ( "Content-type: image/png" );
-// header ( "Content-type: text/plain" );
 
 define ( 'ROWS', 5 );
 define ( 'COLS', 5 );
@@ -319,48 +297,3 @@ define ( 'COLS', 5 );
 define ( 'CELLWIDTH', 60 );
 define ( 'CELLHEIGHT', 40 );
 define ( 'IMAGEHEIGHT', 60 );
-
-$map = array ();
-for ( $x = 0; $x < COLS; $x ++ ) {
-  $map [$x] = array ();
-  for ( $y = 0; $y < ROWS; $y ++ )
-    $map [$x] [$y] = rand ( 0, 3 );
-}
-
-$map = array (
-    array (
-        'terrain',
-        'terrain',
-        'terrain',
-        'terrain',
-        'terrain'
-    ),
-    array (
-        'terrain',
-        'wall_se',
-        'wall_ns',
-        'wall_ne',
-        'terrain'
-    ),
-    array (
-        'terrain',
-        'wall_we',
-        'terrain',
-        'wall_we',
-        'terrain'
-    ),
-    array (
-        'terrain',
-        'wall_sw',
-        'wall_ns',
-        'wall_nw',
-        'terrain'
-    ),
-    array (
-        'terrain',
-        'terrain',
-        'terrain',
-        'terrain',
-        'terrain'
-    )
-);
