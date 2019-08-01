@@ -1,3 +1,10 @@
 #!/bin/bash
-rootDir=$(realpath `dirname ${0}`)/WebInterface
-docker run --rm --name handelssimulator-dev -v ${rootDir}:/var/www -v ${rootDir}/public:/var/www/html -p 4000:80 php:apache
+rootDir=$(realpath `dirname ${0}`)
+webDir=${rootDir}/WebInterface
+docker run \
+  --rm \
+  --name handelsSimulator-dev \
+  -v ${rootDir}/docker/dev-server/files/config/sites-enabled:/etc/apache2/sites-enabled \
+  -v ${webDir}:/var/www/html \
+  -p 4000:80 \
+  php:apache
