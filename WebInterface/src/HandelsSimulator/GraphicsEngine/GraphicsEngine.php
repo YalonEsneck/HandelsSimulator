@@ -3,7 +3,6 @@
 namespace App\HandelsSimulator\GraphicsEngine;
 
 /**
- * This class is a singleton.
  *
  * @author Jan Merkelbag
  */
