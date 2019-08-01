@@ -130,7 +130,7 @@ class GraphicsEngine {
    * Deny instantiation.
    */
   private function __clone() {
-    throw new Exception ( 'Direct instantiation of singleton "' . __CLASS__ . '" not permitted!' );
+    throw new \Exception ( 'Direct instantiation of singleton "' . __CLASS__ . '" not permitted!' );
   }
 
   /**
@@ -173,7 +173,7 @@ class GraphicsEngine {
    * Respects different heights for images: The bottom of the image will always
    * be placed at the bottom of the tile.
    */
-  private static function drawTile( stdClass $tileObject ) {
+  private static function drawTile( \stdClass $tileObject ) {
 
     // TODO Get the image depending on the cell data. The image should already
     // have been created in the beginning of the rendering process - see below.
@@ -204,7 +204,7 @@ class GraphicsEngine {
   /**
    * Calculate the coordinates in pixels of a tile's position.
    */
-  private static function determineCoordinates( stdClass $tileObject, $maxCols, $maxRows ) {
+  private static function determineCoordinates( \stdClass $tileObject, $maxCols, $maxRows ) {
 
     // tilt the tiles first
     $tileObject = self::tilt ( $tileObject, $maxCols, $maxRows );
@@ -237,7 +237,7 @@ class GraphicsEngine {
    * ______--- 8 ---
    * _________---
    */
-  private static function tilt( stdClass $tileObject, $maxCols, $maxRows ) {
+  private static function tilt( \stdClass $tileObject, $maxCols, $maxRows ) {
 
     // shift the tile to right or left depending on its x and y
     $tileObject->xMod = 0.5 * ($maxCols - $tileObject->x - 1 - $tileObject->y) + ($maxRows - $maxCols) * 0.5;
@@ -279,7 +279,7 @@ class GraphicsEngine {
       for ( $x = 0; $x < self::$instance->Cols; $x ++ ) {
 
         // construct the tile object for simplified data exchange
-        $tileObject = new stdClass ();
+        $tileObject = new \stdClass ();
         $tileObject->width = self::$instance->CellWidth;
         $tileObject->height = self::$instance->CellHeight;
         $tileObject->x = $x;
