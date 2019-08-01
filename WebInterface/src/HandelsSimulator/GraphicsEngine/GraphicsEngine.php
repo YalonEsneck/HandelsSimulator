@@ -293,7 +293,7 @@ class GraphicsEngine {
     }
 
     // clean up loaded images
-    foreach ( self::$LoadedImages as $FilePath => $Resource ) {
+    foreach ( self::$LoadedImages as /*$FilePath =>*/ $Resource ) {
       imagedestroy ( $Resource );
     }
   }
