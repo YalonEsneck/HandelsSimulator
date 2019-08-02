@@ -32,7 +32,7 @@ class MapController extends AbstractController {
     $response->headers->set ( 'Content-Type', 'image/png' );
 
     $imageDirPath = $this->fileLocator->locate ( '@GraphicsEngineBundle' ) . '/Resources/images';
-    $terrainTile = new GraphicsEngine\Tiles\Tile ( "{$imageDirPath}/new.terrain.png" );
+    $terrainTile = new GraphicsEngine\Tiles\Tile ( "{$imageDirPath}/simple/terrain.png" );
     $wallSeTile = new GraphicsEngine\Tiles\Tile ( "{$imageDirPath}/wall_se.png" );
     $wallNsTile = new GraphicsEngine\Tiles\Tile ( "{$imageDirPath}/wall_ns.png" );
     $wallNeTile = new GraphicsEngine\Tiles\Tile ( "{$imageDirPath}/wall_ne.png" );
