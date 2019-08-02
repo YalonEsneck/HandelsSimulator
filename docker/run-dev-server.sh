@@ -1,5 +1,5 @@
 #!/bin/bash
-rootDir=$(realpath `dirname ${0}`)
+rootDir=$(realpath `dirname ${0}`/..)
 webDir=${rootDir}/WebInterface
 
 docker build --pull -t handelssimulator:dev docker/dev-server && \
