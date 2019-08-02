@@ -37,7 +37,7 @@ class MapController extends AbstractController {
         0
     ];
 
-    $terrainTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/terrain.png", $zeroImageDisposition );
+    $terrainTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/simple/terrain.png", $zeroImageDisposition );
     $wallSeTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/wall_se.png", $zeroImageDisposition );
     $wallNsTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/wall_ns.png", $zeroImageDisposition );
     $wallNeTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/wall_ne.png", $zeroImageDisposition );
