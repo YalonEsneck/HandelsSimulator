@@ -31,7 +31,7 @@ class MapController extends AbstractController {
     $response->headers->set ( 'Cache-Control', 'private' );
     $response->headers->set ( 'Content-Type', 'image/png' );
 
-    $imageDirPath = $this->fileLocator->locate ( '@GraphicsEngineBundle' ) . '/Resources/images';
+    $imageDirPath = $this->fileLocator->locate ( '@GraphicsEngineBundle' ) . 'Resources/images';
     $zeroImageDisposition = [
         0,
         0
