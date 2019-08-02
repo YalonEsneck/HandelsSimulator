@@ -44,6 +44,7 @@ class MapController extends AbstractController {
     $wallWeTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/wall_we.png", $zeroImageDisposition );
     $wallSwTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/wall_sw.png", $zeroImageDisposition );
     $wallNwTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/wall_nw.png", $zeroImageDisposition );
+    $towerTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/simple/tower.png", $zeroImageDisposition );
 
     // TODO this should be assembled from a database or such
     $dummy_map = [ ];
@@ -61,6 +62,8 @@ class MapController extends AbstractController {
           $dummy_map [$x] [$y] = $wallNsTile;
         } else if ( ($y === 1 || $y === 8) && $x > 1 && $x < 8 ) {
           $dummy_map [$x] [$y] = $wallWeTile;
+        } else if ( $x === 4 && $y === 4 ) {
+          $dummy_map [$x] [$y] = $towerTile;
         } else {
           $dummy_map [$x] [$y] = $terrainTile;
         }
