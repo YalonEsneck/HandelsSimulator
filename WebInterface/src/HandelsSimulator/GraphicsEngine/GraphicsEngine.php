@@ -2,6 +2,8 @@
 
 namespace App\HandelsSimulator\GraphicsEngine;
 
+use App\HandelsSimulator\GraphicsEngine\Tiles\BaseTile;
+
 /**
  *
  * @author Jan Merkelbag
@@ -58,13 +60,6 @@ class GraphicsEngine {
   private $CellHeight = 0;
 
   /**
-   * Height of an image in pixels.
-   *
-   * @var integer
-   */
-  private $ImageHeight = 0;
-
-  /**
    * An image file containing the rendered map.
    *
    * @var resource
@@ -96,22 +91,8 @@ class GraphicsEngine {
   public function __construct() {
 
     // set parameters
-    $this->Cols = COLS;
-    $this->Rows = ROWS;
-    $this->CellWidth = CELLWIDTH;
-    $this->CellHeight = CELLHEIGHT;
-    $this->ImageHeight = IMAGEHEIGHT;
-    $this->Width = $this->Cols * $this->CellWidth;
-    $this->Height = $this->Rows * $this->CellHeight;
-
-    // allocate final image to copy stuff to
-    $this->Image = imagecreatetruecolor ( $this->Width, $this->Height );
-
-    // enable alpha channel (opaque)
-    imagesavealpha ( $this->Image, true );
-
-    // fill image with transparent background
-    imagefill ( $this->Image, 0, 0, imagecolorallocatealpha ( $this->Image, 0, 0, 0, 127 ) );
+    $this->CellWidth = BaseTile::getWidth ();
+    $this->CellHeight = BaseTile::getHeight ();
   }
 
   /**
@@ -221,12 +202,33 @@ class GraphicsEngine {
   }
 
   /**
+   *
+   * @param Map $map
+   */
+  private function prepareCanvas( Map $map ) {
+    $this->Cols = $map->getColCount ();
+    $this->Rows = $map->getRowCount ();
+    $this->Width = $this->Cols * $this->CellWidth;
+    $this->Height = $this->Rows * $this->CellHeight;
+
+    // allocate final image to copy stuff to
+    $this->Image = imagecreatetruecolor ( $this->Width, $this->Height );
+
+    // enable alpha channel (opaque)
+    imagesavealpha ( $this->Image, true );
+
+    // fill image with transparent background
+    imagefill ( $this->Image, 0, 0, imagecolorallocatealpha ( $this->Image, 0, 0, 0, 127 ) );
+  }
+
+  /**
    * Renders, saves and returns the image.
    *
    * @param Map $Map
    *          The map to be rendered.
    */
   public function render( Map $map, $debuggingEnabled = FALSE) {
+    $this->prepareCanvas ( $map );
 
     // enable debugger if necessary
     $this->DebugRendering = $debuggingEnabled;
@@ -290,10 +292,3 @@ class GraphicsEngine {
     }
   }
 }
-
-define ( 'ROWS', 5 );
-define ( 'COLS', 5 );
-
-define ( 'CELLWIDTH', 60 );
-define ( 'CELLHEIGHT', 40 );
-define ( 'IMAGEHEIGHT', 60 );

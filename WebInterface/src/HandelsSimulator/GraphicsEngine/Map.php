@@ -2,13 +2,19 @@
 
 namespace App\HandelsSimulator\GraphicsEngine;
 
-use App\HandelsSimulator\GraphicsEngine\Tiles\Tile;
+use App\HandelsSimulator\GraphicsEngine\Tiles\BaseTile;
 
+/**
+ * Contains the visual representation of the logical map.
+ * It's basically a two-dimensional array.
+ *
+ * @author Jan Merkelbag
+ */
 class Map {
 
   /**
    *
-   * @var Tile[][]
+   * @var BaseTile[][]
    */
   private $fields = [ ];
 
@@ -29,7 +35,7 @@ class Map {
 
   /**
    *
-   * @param Tile[][] $fields
+   * @param BaseTile[][] $fields
    */
   public function __construct( array $fields = []) {
 
@@ -49,11 +55,10 @@ class Map {
       foreach ( $row as $colNo => $cell ) {
 
         // Ensure that cell is an object.
-        // TODO actually we should check for a Cell object rather than a Tile... A Tile is the visual representation of one or more Cells.
-        if ( ! ($cell instanceof Tile) ) {
+        if ( ! ($cell instanceof BaseTile) ) {
 
           // Complain about cell's class (if $cell is an object) or type (if it is not).
-          throw new \InvalidArgumentException ( "All cells must be of type 'Tile'! Cell at {$colNo}|{$rowNo} is of type " . (is_object ( $cell ) ? get_class ( $cell ) : gettype ( $cell )) );
+          throw new \InvalidArgumentException ( "All cells must be of type 'BaseTile'! Cell at {$colNo}|{$rowNo} is of type " . (is_object ( $cell ) ? get_class ( $cell ) : gettype ( $cell )) );
         }
       }
     }
@@ -66,7 +71,7 @@ class Map {
   public function getColCount(): int {
     return $this->colCount;
   }
-  public function getCellAt( int $x, int $y ): Tile {
+  public function getCellAt( int $x, int $y ): BaseTile {
     if ( $x > $this->colCount ) {
       throw new \OutOfRangeException ( "Cannot get cell at x:{$x} / y:{$y} because x exceeds column count!" );
     }
