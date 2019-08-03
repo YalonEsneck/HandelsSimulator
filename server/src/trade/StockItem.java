@@ -13,8 +13,12 @@ public class StockItem implements IUniqueContainerItem {
 		this.name = name;
 		this.standardPrice = standardPrice;
 		this.currentPrice = standardPrice.doubleValue();
-		this.maxPrice = (int) Math.ceil(standardPrice * 10);
-		this.minPrice = (int) Math.ceil(standardPrice * .1);
+
+		// Set highest possible price to 120%
+		this.maxPrice = (int) Math.ceil(standardPrice * 1.2);
+
+		// Set lowest possible price to 80%
+		this.minPrice = (int) Math.ceil(standardPrice * .8);
 	}
 
 	public Double simulatePrice(Integer currentQuantity, Integer maxQuantity, Integer quota) {
