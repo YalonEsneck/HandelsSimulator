@@ -22,14 +22,14 @@ public class Server {
 		Server.cityMarketWorker.setDaemon(true);
 		Server.cityMarketWorker.setName("cityMarket");
 
+		Server.commodities = new UniqueArrayList<StockItem>();
+
 		Scanner scanner = new Scanner(System.in);
 		Server.menu(scanner);
 		scanner.close();
 	}
 
 	private static void generateDummyData() {
-		Server.commodities = new UniqueArrayList<StockItem>();
-
 		Server.commodities.add(new StockItem("Wheat", 30));
 		Server.commodities.add(new StockItem("Flour", 50));
 		Server.commodities.add(new StockItem("Bread", 25));
