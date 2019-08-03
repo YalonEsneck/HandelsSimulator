@@ -118,6 +118,7 @@ public class Server {
 				System.out.println(
 						"market list                                         - list all commodities and their prices");
 				System.out.println("market add <name<String>> [<quantity<Integer>>]     - add a commodity");
+				System.out.println("market tick                                         - manually tick the market");
 				System.out.println(
 						"ware list                                           - list all commodities and their prices");
 				System.out.println("ware add <name<String>> <standardPrice<Integer>>    - add a commodity");
@@ -188,6 +189,15 @@ public class Server {
 
 				case "list":
 					Server.listCommoditiesInMarket();
+					break;
+
+				case "tick":
+					if (Server.cityMarketWorker.isAlive()) {
+						System.out.println("Cannot tick market: worker is running.");
+					} else {
+						Server.cityMarket.tick();
+						System.out.println("Ticked market.");
+					}
 					break;
 
 				default:
