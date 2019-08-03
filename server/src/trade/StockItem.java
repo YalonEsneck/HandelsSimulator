@@ -84,6 +84,6 @@ public class StockItem implements IUniqueContainerItem {
 
 	@Override
 	public String getUniqueValue() {
-		return this.name;
+		return this.name.toLowerCase();
 	}
 }
