@@ -13,8 +13,8 @@ public class StockItem implements IUniqueContainerItem {
 		this.name = name;
 		this.standardPrice = standardPrice;
 		this.currentPrice = standardPrice.doubleValue();
-		this.maxPrice = standardPrice * 10;
-		this.minPrice = standardPrice / 10 < 1 ? 1 : standardPrice / 10;
+		this.maxPrice = (int) Math.ceil(standardPrice * 10);
+		this.minPrice = (int) Math.ceil(standardPrice * .1);
 	}
 
 	public Double simulatePrice(Integer currentQuantity, Integer maxQuantity, Integer quota) {
@@ -71,7 +71,7 @@ public class StockItem implements IUniqueContainerItem {
 	}
 
 	public Double getCurrentPrice() {
-		return currentPrice;
+		return Math.ceil(this.currentPrice);
 	}
 
 	public void setCurrentPrice(Double currentPrice) {
