@@ -72,9 +72,10 @@ public class Server {
 		HashMap<StockItem, Integer> stockItems = Server.cityMarket.getStockItems();
 		if (stockItems.size() > 0) {
 			for (Map.Entry<StockItem, Integer> stockItem : stockItems.entrySet()) {
-				System.out.println(stockItem.getKey().getName() + " (" + stockItem.getValue() + "): "
-						+ stockItem.getKey().getCurrentPrice() + " (" + stockItem.getKey().getMinPrice() + ":"
-						+ stockItem.getKey().getStandardPrice() + ":" + stockItem.getKey().getMaxPrice() + ")");
+				System.out.println(stockItem.getKey().getName() + " (" + stockItem.getValue() + "/"
+						+ Server.cityMarket.getStockpileSize() + "): " + stockItem.getKey().getCurrentPrice() + " ("
+						+ stockItem.getKey().getMinPrice() + ":" + stockItem.getKey().getStandardPrice() + ":"
+						+ stockItem.getKey().getMaxPrice() + ")");
 			}
 		} else {
 			System.out.println("The market is empty.");

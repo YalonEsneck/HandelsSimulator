@@ -12,6 +12,10 @@ public class Market {
 	public Market() {
 		this.stockItems = new HashMap<StockItem, Integer>();
 	}
+	
+	public int getStockpileSize() {
+		return Market.capacityPerPile;
+	}
 
 	public Integer addStockItem(StockItem stockItem, Integer quantity) throws Exception {
 
