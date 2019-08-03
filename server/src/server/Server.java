@@ -154,7 +154,7 @@ public class Server {
 							System.out.println("FAILED");
 						}
 					} else {
-						System.out.print("Nothing to stop as nothing is running.");
+						System.out.println("Nothing to stop as nothing is running.");
 					}
 					break;
 
