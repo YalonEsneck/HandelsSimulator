@@ -1,4 +1,5 @@
 # Ignore Eclipse settings
 .buildpath
 .project
+.classpath
 .settings/
