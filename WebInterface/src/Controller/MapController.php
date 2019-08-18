@@ -37,38 +37,25 @@ class MapController extends AbstractController {
         0
     ];
 
-    $terrainTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/simple/terrain.png", $zeroImageDisposition );
-    $wallSeTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/wall_se.png", $zeroImageDisposition );
-    $wallNsTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/wall_ns.png", $zeroImageDisposition );
-    $wallNeTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/wall_ne.png", $zeroImageDisposition );
-    $wallWeTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/wall_we.png", $zeroImageDisposition );
-    $wallSwTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/wall_sw.png", $zeroImageDisposition );
-    $wallNwTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/wall_nw.png", $zeroImageDisposition );
-    $towerTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/simple/tower.png", $zeroImageDisposition );
+    $terrainGrassTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/simple/terrain/grass.png", $zeroImageDisposition );
+    $farmTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/simple/buildings/farm.png", $zeroImageDisposition );
+    $farmlandTile = new GraphicsEngine\Tiles\GenericTile ( "{$imageDirPath}/simple/terrain/farmland.png", $zeroImageDisposition );
 
     // TODO this should be assembled from a database or such
     $dummy_map = [ ];
     for ( $x = 0; $x < 10; $x ++ ) {
       for ( $y = 0; $y < 10; $y ++ ) {
-        if ( $x === 1 && $y === 1 ) {
-          $dummy_map [$x] [$y] = $wallSeTile;
-        } else if ( $x === 1 && $y === 8 ) {
-          $dummy_map [$x] [$y] = $wallNeTile;
-        } else if ( $x === 8 && $y === 1 ) {
-          $dummy_map [$x] [$y] = $wallSwTile;
-        } else if ( $x === 8 && $y === 8 ) {
-          $dummy_map [$x] [$y] = $wallNwTile;
-        } else if ( ($x === 1 || $x === 8) && $y > 1 && $y < 8 ) {
-          $dummy_map [$x] [$y] = $wallNsTile;
-        } else if ( ($y === 1 || $y === 8) && $x > 1 && $x < 8 ) {
-          $dummy_map [$x] [$y] = $wallWeTile;
-        } else if ( $x === 4 && $y === 4 ) {
-          $dummy_map [$x] [$y] = $towerTile;
-        } else {
-          $dummy_map [$x] [$y] = $terrainTile;
-        }
+        $dummy_map [$x] [$y] = $terrainGrassTile;
       }
     }
+
+    // Farm test
+    for ( $x = 2; $x < 7; $x ++ ) {
+      for ( $y = 2; $y < 7; $y ++ ) {
+        $dummy_map [$x] [$y] = $farmlandTile;
+      }
+    }
+    $dummy_map [3] [2] = $farmTile;
 
     $map = new GraphicsEngine\Map ( $dummy_map );
 
